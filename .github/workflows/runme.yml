@@ -66,8 +66,8 @@ jobs:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ inputs.RSA }}" | base64 -d > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          echo "${{ inputs.RSA }}" | base64 -d > rsa
+          chmod 600 rsa
           ssh-keyscan -H ${{ inputs.IP }} >> ~/.ssh/known_hosts
       
       # Stop existing container (for both actions)
@@ -87,7 +87,7 @@ jobs:
       - name: Rsync app
         if: ${{ inputs.action == 'rsync and run' }}
         run: |
-          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" app/* ${{ inputs.username }}@${{ inputs.IP }}:${{ inputs.where }}/app/.
+          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no -i rsa" app/* ${{ inputs.username }}@${{ inputs.IP }}:${{ inputs.where }}/app/.
       
       # For rsync and run, start container
       - name: Run container
