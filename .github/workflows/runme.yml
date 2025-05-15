@@ -78,11 +78,11 @@ jobs:
         with:
           host: ${{ inputs.IP }}
           username: ${{ inputs.username }}
-          key_path: rsa  # Use the path to the decrypted key instead of key parameter
+          key_path: rsa
           port: 22
           script: |
-            docker stop ${{ inputs.name }} || true
-            docker rm ${{ inputs.name }} || true
+            sudo docker stop ${{ inputs.name }} || true
+            sudo docker rm ${{ inputs.name }} || true
       
       # For rsync and run, copy app to remote
       - name: Rsync app
@@ -97,11 +97,11 @@ jobs:
         with:
           host: ${{ inputs.IP }}
           username: ${{ inputs.username }}
-          key_path: rsa  # Use the path to the decrypted key instead of key parameter
+          key_path: rsa
           port: 22
           script: |
-            docker pull ${{ inputs.pull }}
-            docker run -d \
+            sudo docker pull ${{ inputs.pull }}
+            sudo docker run -d \
               -p ${{ inputs.PORT }}:${{ inputs.PORT }} \
               --name ${{ inputs.name }} \
               -v ${{ inputs.where }}/app:/app \
