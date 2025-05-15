@@ -87,7 +87,7 @@ jobs:
       - name: Rsync app
         if: ${{ inputs.action == 'rsync and run' }}
         run: |
-          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" app ${{ inputs.username }}@${{ inputs.IP }}:${{ inputs.where }}/.
+          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" app/* ${{ inputs.username }}@${{ inputs.IP }}:${{ inputs.where }}/app/.
       
       # For rsync and run, start container
       - name: Run container
