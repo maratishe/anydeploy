@@ -16,8 +16,8 @@ on:
         description: 'Username for the remote machine'
         required: true
         type: string
-      RSA:
-        description: 'Base64 encoded RSA private key'
+      RSApass:
+        description: 'Password to decrypt the RSA.enc file'
         required: true
         type: string
       where:
@@ -66,7 +66,8 @@ jobs:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ inputs.RSA }}" | base64 -d > rsa
+          # Decrypt the RSA key using the provided password
+          openssl enc -d -aes-256-cbc -in RSA.enc -out rsa -pass pass:"${{ inputs.RSApass }}"
           chmod 600 rsa
           ssh-keyscan -H ${{ inputs.IP }} >> ~/.ssh/known_hosts
       
@@ -77,7 +78,7 @@ jobs:
         with:
           host: ${{ inputs.IP }}
           username: ${{ inputs.username }}
-          key: ${{ inputs.RSA }}
+          key_path: rsa  # Use the path to the decrypted key instead of key parameter
           port: 22
           script: |
             docker stop ${{ inputs.name }} || true
@@ -96,7 +97,7 @@ jobs:
         with:
           host: ${{ inputs.IP }}
           username: ${{ inputs.username }}
-          key: ${{ inputs.RSA }}
+          key_path: rsa  # Use the path to the decrypted key instead of key parameter
           port: 22
           script: |
             docker pull ${{ inputs.pull }}
