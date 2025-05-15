@@ -23,6 +23,12 @@ deploy anything to a docker container on a publically accessible IP over SSH
  - create your own github repo, put this code into it and run its **Github Actions** script
    - all the necessary into is entered via the form in the actions script (no secrets, variables, etc)
 
+running the script looks like this -- a lo-o-o-ong form.
+Note that you can make variables local to the flow or put it into `secrets`, etc. vars. 
+
+![image](https://github.com/user-attachments/assets/408f9d8a-98ef-40b1-a4fb-4c6ffd0ead7e)
+
+
 
 ## full auto
 
